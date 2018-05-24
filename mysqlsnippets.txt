@@ -1,0 +1,25 @@
+To connect:
+    mysql -uroot
+
+To have launchd start mysql at login:
+    ln -sfv /usr/local/opt/mysql/*.plist ~/Library/LaunchAgents
+Then to load mysql now:
+    launchctl load ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist
+Or, if you don't want/need launchctl, you can just run:
+    mysql.server start
+
+
+Logs:
+/usr/local/Cellar/mysql/5.6.23/Wojteks-MacBook-Pro.local.err
+
+
+In case of:
+014-01-31 00:03:03 13223 [ERROR] InnoDB: The system tablespace must be writable!
+2014-01-31 00:03:03 13223 [ERROR] Plugin 'InnoDB' init function returned error.
+2014-01-31 00:03:03 13223 [ERROR] Plugin 'InnoDB' registration as a STORAGE ENGINE failed.
+2014-01-31 00:03:03 13223 [ERROR] Unknown/unsupported storage engine: InnoDB
+2014-01-31 00:03:03 13223 [ERROR] Aborting
+
+
+delete .err file from:
+/usr/local/var/mysql

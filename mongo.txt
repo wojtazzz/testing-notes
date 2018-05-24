@@ -1,0 +1,27 @@
+
+
+
+
+
+
+
+db.collection_name.find({field:234234},{_id:0,field:1})
+
+db.collection_name.update({field:'dupa'},{field2:costam})
+
+
+db.getCollectionNames()
+
+db.getCollection("issuedCardConfiguration").find()
+
+db.bookmarks.find().sort({updatedAt:1});
+
+
+// Remove all documents from collection:
+db.bookmarks.remove({})
+
+// Drop collection completally
+db.externalsimulator.drop()
+
+// Update githubURL for document with the given location (we know that is unique):
+db.bookmarks.update({ location : "http://www.codingpedia.org/" }, { githubURL : "https://github.com/Codingpedia"} );

@@ -1,0 +1,55 @@
+I----------------------
+Mobile app repository:
+----------------------
+http://nexus.seamless.internal:8081/nexus/content/repositories/releases/com/seamless/customer/se-mpayment-app/
+http://bamboo/browse/APPS-ANDROIDR0-6/artifact/shared/APK/
+http://confluence/pages/viewpageattachments.action?pageId=6463612&metadataLink=true
+
+
+## Run emulator
+android avd
+emulator -list-avds
+emulator -avd NameOfAvd
+emulator -avd emulator -http-proxy http://10.2.1.156:8081 &
+
+android list targets
+
+/system/etc/security/cacerts
+
+## Troubleshooting
+adb logcat
+
+## Install/uninstall app
+adb install -r seqr-android-app-dev-release-3.0.0.apk
+pm list packages
+pm uninstall com.seamless.seqr_dev
+
+## Install (BURP) certificate on android emu
+mv cacert.der cacert.cer
+# print cert
+openssl x509 -in cacert.cer -inform DER -text
+# calculate hash that should be used as cert name
+openssl x509 -noout -subject_hash_old -inform DER -in cacert.cer
+
+/system/etc/security/cacerts
+
+## Default ports
+Emulator 1, console: 5554
+Emulator 1, adb: 5555
+
+## ----------------------
+## Modify max available users per device (multiple accounts)
+## ----------------------
+pm get-max-users
+su
+setprop fw.max_users 8
+adb shell pm create-user "user name"
+adb shell pm list users
+adb shell (if you’re not already, you can use terminal emulator if you want)
+su
+mount -o rw,remount /system
+echo fw.max_users=16 >> build.prop
+exit
+exit
+adb reboot (or reboot the device however you want)
+

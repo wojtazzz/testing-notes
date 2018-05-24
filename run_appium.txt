@@ -1,0 +1,23 @@
+
+
+
+
+
+
+SEQR CLASSIC
+http://bamboo.seamless.internal/browse/APPS-ANDROIDF/latestSuccessful/artifact/ASD/APK/seqr-android-app-dev-debug-4.6.20-SNAPSHOT.apk
+
+mvn failsafe:integration-test failsafe:verify -Dskip.surefire.tests=true -Dspring.profiles.active=android,stgsepa,sepa,grid -Dfailsafe.fork.count=1 -PsepaAndroid -Dmaven.test.failure.ignore=true -Dit.test=EuUserRegistrationTest -Ddriver.android.appPath=http://bamboo.seamless.internal/browse/APPS-ANDROIDF/latestSuccessful/artifact/ASD/APK/seqr-android-app-dev-debug-4.6.20-SNAPSHOT.apk | tee appium.log
+
+mvn clean install -U failsafe:integration-test failsafe:verify -Dskip.surefire.tests=true -Dspring.profiles.active=android,stgsepa,sepa,grid -Dfailsafe.fork.count=1 -PsepaAndroid -Dmaven.test.failure.ignore=true -Dit.test=EuUserRegistrationTest -Ddriver.android.appPath=http://bamboo.seamless.internal/browse/APPS-ANDROIDF/latestSuccessful/artifact/ASD/APK/seqr-android-app-dev-debug-4.6.20-SNAPSHOT.apk | tee appium.log
+
+
+
+BAMBOO
+mvn clean failsafe:integration-test failsafe:verify -Dtest=EuUserRegistrationTest -Dskip.surefire.tests=true -Dspring.profiles.active=android,stgsepa,sepa,grid -Dfailsafe.fork.count=1 -PsepaAndroid -Ddriver.device.type=EMULATOR -pl seqr-acceptance-tests-common,seqr-acceptance-tests-app -Dmaven.test.failure.ignore=true -Ddriver.seqrgo.appPath=http://bamboo.seamless.internal/browse/APPS-SEQRGO-442/artifact/JOB1/apk/app-dev-debug.apk
+
+
+SEQR-GO
+http://bamboo.seamless.internal/browse/APPS-SEQRGO-442/artifact/JOB1/apk/app-dev-debug.apk
+
+mvn clean install -U failsafe:integration-test failsafe:verify -Dskip.surefire.tests=true -Dspring.profiles.active=seqrgo,stgsepa,sepa,grid -Dfailsafe.fork.count=1 -PsepaAndroid -Dmaven.test.failure.ignore=true -Dit.test=EuSeqrGoUserRegistrationTest -Ddriver.seqrgo.appPath=http://bamboo.seamless.internal/browse/APPS-SEQRGO-442/artifact/JOB1/apk/app-dev-debug.apk | tee appium.log

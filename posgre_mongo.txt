@@ -1,0 +1,28 @@
++++++++
+POSTGRE
++++++++
+
+entercontainer postgre
+
+su - postgres
+
+psql
+
+\list
+
+\connect mpws
+
+
+INSERT INTO partner (partner_id, partner_checkout_url, partner_secret, partner_secret_salt, comment, created_at)
+VALUES ('seqrTest',  'https://masterpass-dev.seqr.com/seqr-masterpass-webviews/checkout.html', decode('DxDBMFlT7uDmb7wY3+luEmqwvKc7M2Eegun4sQvj8wE=', 'base64'),  decode('Keq6sCBofm5ehS1WgUvioA==', 'base64'), 'partner comment', '2017-04-25T08:31:02.295');
+
+ UPDATE partner SET partner_checkout_url='https://masterpass-dev.seqr.com/seqr-masterpass-webviews/checkout.html',partner_secret=decode('DxDBMFlT7uDmb7wY3+luEmqwvKc7M2Eegun4sQvj8wE=', 'base64'), partner_secret_salt=decode('Keq6sCBofm5ehS1WgUvioA==', 'base64'), comment='partner comment' WHERE partner_id='seqrTest';
+
+
+++++++
+MONGO
+++++++
+
+ db.getCollection('account').find({profileId:"8645d8d1-af96-4e7c-b90b-dc388af5d909"}).pretty();
+
+ db.getCollection('account').update({"accountId" : "BE5976058e68278b651bcfa9ce"}, { $set: {"balance.money.amount" : 2000 }},false, true);

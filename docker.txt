@@ -1,0 +1,74 @@
+
+
+--------------------- Remove docker image --------------------
+docker stop containerId
+docker rm containerId
+docker rmi imageId
+
+---------------------- Cleanup ----------------------
+docker rm $(docker ps -a -q)
+docker rmi $(docker images -q)
+
+------------------- Entercointaier -------------
+docker exec -ti latest_zookeeper_1 bash
+
+
+
+--------------------  Build image ------------
+vim Dockerfile
+
+# Set SEQR_VERSION to the version you want to build. Ex: ENV SEQR_VERSION seqr-backend/2.1399 Or: ENV SEQR_VERSION feature/SEQR-3401
+
+docker build -t seqr-backend:2.1399 .
+
+# Run it:
+CID=`docker run -d --cap-add SYS_RESOURCE --cap-add SETGID --cap-add SETUID seqr-backend:VERSION`
+docker exec $CID /scripts/reference-setup.sh MARKET
+
+--------------------  Push to local repo ------------------------
+
+docker build -t bamboo-agent:4.5.2wojfij .
+
+docker tag 27d48f3f0551 docker.seamless.internal/phantomjs:latest
+docker tag 710d4edadb4e docker.seamless.internal/bamboo-agent:4.5.2wojfij
+
+docker push docker.seamless.internal/phantomjs
+
+--------------------  Check local repo --------------------------
+
+http://docker.seamless.internal/v2/_catalog
+
+http://docker.seamless.internal/v2/phantomjs/tags/list
+
+
+
+---------------------- Running different SEQR containers ----------------------------------------------
+
+#PPS
+docker run --name pps-node -p 8090:80 -e "SEQR_HOST=`hostname -f`" -e "PPS_INI_FILENAME=dev-eu" -d docker.seamless.internal/pps-node
+
+#SEQR locally (get bamboo-agent)
+bamboo-agent/opt/seamless/data/docker-compose up
+
+#PHANTOMJS
+docker run -d -p 8910:8910 docker.seamless.internal/phantomjs phantomjs --webdriver=8910
+
+
+---------------------- Docker logs on MAC ----------------------------------------------
+
+# Where are container Logs?????
+docker inspect --format='{{.LogPath}}' containername
+
+docker-compose up -d --force-recreate
+
+docker volume ls
+screen ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/tty
+
+# disconnect that session but leave it open in background
+Ctrl-a d
+# list that session that's still running in background
+screen -ls
+# reconnect to that session (don't open a new one, that won't work and 2nd tty will give you garbled screen)
+screen -r
+# kill this session (window) and exit
+Ctrl-a k

@@ -1,0 +1,11 @@
+
+
+zap  -> Applications/OWASPZAP.app/Contents/Java/zap.sh
+droidatscreen -> ~/Applications/DroidAtScreen/droidAtScreen-1.1.jar
+subl -> /Applications/Sublime Text.app/Contents/SharedSupport/bin/subl
+phantomjs -> /Users/wojtekf/Server/phantomjs/phantomjs-2.0.0-macosx/bin/phantomjs
+
+
+
+Users/wojtekf/Library/Android_sdk/android-sdk-macosx/
+Users/wojtekf/Library/Android_sdk/android-sdk-macosx/tools

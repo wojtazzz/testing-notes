@@ -1,0 +1,305 @@
+git log --oneline --decorate --all --graph -50
+
+#-----------------------------------------------
+#      sudo
+#-----------------------------------------------
+                  .bashrc
+    COMMAND        $HOME   $USER  Env.  $PATH
+ 1. sudo -i        (root)   root  root  [1]
+ 2. sudo -s        (USER)   root  USER  /home/${USER}/bin:[1]
+ 3. sudo /bin/bash (USER)   root  USER  /home/${USER}/bin:[1]
+ 4. sudo su        (root)   root  USER  [1]:/usr/games:/usr/local/games
+ 5. sudo su -      (root)   root  root  [1]
+
+sudo -u admin bash
+
+
+mktemp -t temp_file_prefix
+# Defaulut temp folder:
+/var/folders/7m/pyz_xkhd6zz85ncq_3359w9w0000gn/T/temp_file_prefix.UEPtqAh5
+
+# jump to /tmp and remember current location
+pushd /tmp
+#show saved locations
+dirs
+#return to last remembered location
+popd
+
+printenv / set / unset
+
+#Brew
+brew unlink maven && brew uninstall
+
+#-----------------------------------------------------
+#       Files and directories
+#-----------------------------------------------------
+
+
+Size of directory
+du -sch *
+
+
+df -h .
+
+
+#-----------------------------------------------
+#      grep-master-pro
+#-----------------------------------------------
+#non mathing lines:
+grep -v
+
+# grep recursively in all subfolders
+# grep -Fr '/views/v1/user-profile/delivery-address' .
+
+#grep in files (hidden and not hidden) only, -s hides errors concerning folders
+grep -s 'DOCKER_HOST' /Users/wojtekf/.bash{*,.*}
+
+# Filetring stuff from grep
+grep '01/Jul/1995' NASA_access_log_Jul95 |
+  awk '{print $7}' |
+  sort |
+  uniq -c |
+  sort -h -r |
+  head -n 15 |
+  awk '{print $1}' |
+  ./spark
+
+
+# delete particular line from file (and backup this file)
+sed -i.bak -e '136d' /Users/wojtekf/.ssh/known_hosts
+
+# show line numbers
+cat -n
+
+# print multiple files into one file (cat doesnt work with pipe!)
+cat `find . -name '*.conf' -print` > dump.config
+
+# FILTER fields form outout
+# -d delimiter -f field
+cut -d '.' -f 1
+# separator is ':' print 5th field
+awk -F: '{print $5}'
+
+#Another way of splitting with awk
+awk '{split($0, a, "/"); print a[1];}
+
+
+# delete char from stream
+tr -d ','
+
+Change property in text file:
+sed -i -e 's/seqr.feature.stored.value.account.creation.enabled=true/seqr.feature.stored.value.account.creation.enabled=false/g' /opt/seamless/conf/seqr-paymentbroker/seqr-paymentbroker.properties
+
+false-> true
+sed -i -e 's/seqr.feature.stored.value.account.creation.enabled=false/seqr.feature.stored.value.account.creation.enabled=true/g' /opt/seamless/conf/seqr-paymentbroker/seqr-paymentbroker.properties
+
+cat /opt/seamless/conf/seqr-paymentbroker/seqr-paymentbroker.properties | grep stored
+
+/opt/seamless/bin/sva-account-migration -m 32476661111 -y /opt/seamless/bin/sva-account-migration-logging.yaml
+/opt/seamless/bin/sva-account-migration -m 46726662222 -y /opt/seamless/bin/sva-account-migration-logging.yaml
+
+seqr-paymentbroker restart
+
+??
+while read line; do grep "$line\] ERROR " /var/seamless/log/seqr-paymentbroker/seqr-paymentbroker.log ; done < ./log/failed_output.log.1477391106 > ./log/seqr-paymentbroker.filtered.log
+
+
+
+Finding shit
+
+find / -iname "sva-account-migration" 2>/dev/null
+
+find <paths> ! -readable -prune -o <other conditions like -name> -print
+find / ! -readable -prune -o "sva-account-migration" -print
+
+#partial path search
+find . -path "*content/docs/file.xml"
+
+find **/target/* -iname '*.rpm'
+
+
+# Pull every subfolder
+ls | xargs -I{} git -C {} pull
+
+
+#-----------------------------------------------
+#      remote ssh scripts
+#-----------------------------------------------
+
+ssh USER@HOST 'COMMAND1; COMMAND2; COMMAND3'
+
+ssh USER@HOST 'bash -s' < script.sh
+
+VAR1="Variable 1"
+ssh $HOST bash -c "'
+ls
+pwd
+if true; then
+    echo $VAR1
+else
+    echo "False"
+fi
+'"
+
+
+
+
+
+
+#-----------------------------------------------
+#      bash scripting
+#-----------------------------------------------
+
+
+#### ---- prepare a set of functions in files located in /include/ folder for usage -----------
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+for file in $SCRIPT_DIR/include/*
+do
+    if [ -f "${file}" ] ; then
+        source $file
+    fi
+done
+
+#### ------------------------------------------------------------------------------------------
+
+# useful for script cleanup (clean_up is a function name)
+trap clean_up EXIT ERR SIGQUIT SIGINT
+
+
+$# - number of parameters in script
+$? - exit code of last executed script
+$* - expands to the positional parameters
+$@ - expands to the positional parameters
+
+
+
+
+set -- a b c # set positional params $1=a $2=b $3=c
+# '--' means "don't treat anything following this as an option" f.e.: set -- -z will set $1='-z'
+
+#usefull options
+set +e # do not exit script if command fails
+w
+set -e #exit on errors (normal state)
+
+#Debugging
+bash -x script1.sh
+
+#Debugging (run script normally without -x)
+set -x          # activate debugging from here, print expanded command line with'+' before executing
+w
+set +x          # stop debugging from here
+
+
+# Bash arrays expanding
+eb_properties = "one two"
+echo "${eb_properties[*]}" is equivalent to echo "one two"
+"${eb_properties[@]}" is equivalent to echo "one" "two" (only one will be echoed)
+
+
+#LOOPS in bash
+
+#Generate one inline file with all functions
+echo '#!/bin/bash' > ${DEPLOY_FILE}
+for file in ${bamboo.build.working.directory}/include/*
+do
+    cat $file >> ${DEPLOY_FILE}
+done
+
+IFS - internal Field Separator for all loops (on default bash separates by whitespace)
+IFS=$','
+vals='/mnt,/var/lib/vmware/Virtual Machines,/dev,/proc,/sys,/tmp,/usr/portage,/var/tmp'
+for i in $vals; do echo $i; done
+unset IFS
+
+#-----------------------------------------------
+MYSQL
+#execute statement:
+mysql -v -u${mysql_old_username} -e "show databases"
+mysql -B -N -h ${hostname} --user=${mysql_shopspot_username} -D ${db_name}
+
+-N - skip column names
+-B - print using tab as column separator
+-v - verbose
+
+#-----------------------------------------------
+# Upload
+scp -pv wf.txt wojfij@gtsp-dev-eta-srv01:/home/wojfij
+scp -r /tmp/some/folder wojfij@gtsp-dev-eta-srv01:/home/wojfij
+# Download
+scp root@1.2.3.4:/root/pcfilename.rar
+
+#-----------------------------------------------
+#      Network stuff
+#-----------------------------------------------
+
+sudo lsof -iTCP -sTCP:LISTEN | grep mongo
+# Discover hosts on network
+# Check arp table for hosts and ip numbers
+arp -n -a
+nmap -sP 192.168.2.1/24
+
+#service name to PID
+ps -ef | grep seqr-kyc-service
+
+On MAC:
+sudo lsof -i -n -P | grep TCP
+sudo lsof -i -n -P | grep TCP | grep -F ':22'
+
+
+
+#PID to port
+netstat -nlpt|grep 1234
+
+netstat -lan | grep 32507
+-a #all listeningn and not listening
+-l #listening only
+-n #numeric IPs etc
+-p #protocol
+
+# What service is running on port?
+fuser -v 59001/tcp
+lsof -i :59001 -S
+
+lsof -iTCP -sTCP:LISTEN | grep mongo
+
+netstat -ie  == ifconfig
+
+# PID to service
+ps -efww|grep 2146
+
+
+
+# ss is the same as netstat but better
+ss -nltp
+ss -4 state LISTENING
+
+
+
+#-----------------------------------------------
+#SCREEN
+#-----------------------------------------------
+screen -rx
+
+ctrl a d
+
+
+
+---------------------
+tar -zxvf yourfile.tar.gz
+
+
+/Users/wojtekf/Projects/issuer/src/main/resources/sftp
+
+/Users/wojtekf/Projects/issuer/issuer-service/iss-external-simulators-mpts/src/main/resources/sftp
+
+
+
+
+
+
+
+
+

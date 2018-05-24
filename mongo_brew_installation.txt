@@ -1,0 +1,32 @@
+brew install mongodb
+
+#installation path
+/usr/local/Cellar/mongodb
+
+#config path
+ /usr/local/etc/mongod.conf
+
+ #log
+ /usr/local/var/log/mongodb/mongo.log
+
+ #db path
+ /usr/local/var/mongodb
+
+# data path
+
+# command line Opts
+db.serverCmdLineOpts()
+
+
+sudo lsof -iTCP -sTCP:LISTEN | grep mongo
+
+
+
+#### When Installed MOngo by brew (I have!!)
+brew services list
+
+#To start mongodb:
+brew services start mongodb
+
+#To stop mongodb if it's already running:
+brew services stop mongodb

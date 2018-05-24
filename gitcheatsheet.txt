@@ -1,0 +1,163 @@
+########## GIT BEGINNING ##########
+
+git clone https://github.com/wojtazzz/workreport.git
+#completely new local repo: xxxxxxxx
+cd existing-project
+git init
+git add --all
+git commit -m "Initial Commit"
+git remote add origin ssh://git@bitbucket/sqr_srv/shopspot-tests.git
+git push -u origin master
+
+########## GIT CONFIG ##########
+
+
+git config --global alias.ci commit
+git config --global core.autocrlf "false"
+git config --global alias.diffdev git diff --stat --color rat-dev origin/rat-dev
+git config --global core.editor "'C:/Program Files/Notepad++/notepad++.exe' -multiInst -notabbar -nosession -noPlugin"
+git config --global credential.helper cache
+git config credential.helper 'cache --timeout=3600'
+git config remote.origin.url http://wfijarczyk:haslo@pld0030.rule.lan:88/git/gradrat.git
+git config --list
+
+########### GIT STAGE/UNSTAGE ##########
+
+# untracked->staged (including deleting files )
+git add -A
+#abouve is equivalent to:
+git add.;git add -u
+
+# check which untracked files will be removed and then remove
+git clean -f -n
+git clean -f -d
+
+
+
+
+########### UNDO STUFF ##########
+
+# undo last commit (HEAD~ = parent of HEAD = one but last commit)
+git reset --soft HEAD~
+git reset --mixed HEAD~
+git reset --hard HEAD~
+git commit --amend
+
+# undo merge commit, this is not recommended if you pushed:
+git reset --hard commit_you_want_to_go_back_to
+
+# Undoing merge commit that was pushed:
+git revert -m 1 commit_hash
+# If you want to merge that branch again do this:
+git revert revert_commit_hash
+
+
+
+########### CHECK STATUS ##########
+
+git status
+git diff -staged
+git diff
+git log --graph --decorate --pretty=oneline
+git log --oneline --decorate --all --graph -50
+git log --oneline --decorate --all --graph --simplify-by-decoration -50
+
+git log -p -10
+git log --stat
+git lognice
+git reflog
+git remote show origin
+git remote -v
+git symbolic-ref HEAD
+
+git diff --stat --color rat-dev origin/rat-dev
+git diff rat-dev origin/rat-dev
+
+
+########### REMOTE OPERATIONS ##########
+
+git push origin master
+git fetch origin
+git pullgit s
+git pull --rebase
+
+
+git branch dev_branch
+# switch to a dev_branch by pointing HEAD pointer at it
+git checkout dev_branch
+git checkout -b 'issue_1234_branch'
+git branch -d branch_to_be_deleted
+git branch -v
+git branch --merged
+
+########## MANAGING BRANCHES #######
+
+git branch -avv
+
+// create new branch
+git checkout -b feature/SEQRSER-601
+
+// switch to branch
+git checkout feature/SEQRSER-601
+
+git push origin feature/SEQRSER-601
+git push -u
+
+git branch -d branch_to_be_deleted
+git push origin --delete <branchName>
+
+
+
+########## MERGE ##########
+
+#merging - you merge into original branch (merge back to trunk)
+git checkout master
+git merge --no-ff issue_1234_branch
+git merge --squash issue_1234_branch # merge and delete commit history
+
+# Merge and automatically accept my or incoming version
+git merge -s ours BranchToBeMerged
+git merge -X -Xtheirs BranchToBeMerged
+git rm file  # merge theirs does not solve deleted files so manual delete is needed
+
+
+#conflict resolving, resolve manually and stage to mark resolved:
+
+# Keep My (ours?) or incomming (theirs?) file version at merge conflict resolving:
+git checkout --ours index.html
+git checkout --theirs _layouts/default.html
+
+git add resolved_file
+git mergetool
+
+
+
+###########  REBASE ##########
+
+git rebase base_branch topic_branch_to_te_applied
+git rebase --onto base_branch midlebranch changes_to_apply_branch
+# DO NOT REBASE COMMITS THAT YOU HAVE PUSHED TO REPO!!
+
+
+
+#delete remote branch
+git push origin :branch_to_be_deleted
+
+#track remote branch
+git co --track origin/branch_to_be_tracked
+
+###########  STASH ##########
+
+git stash
+git stash apply
+git stash list
+git stash show -p
+
+
+########## TAGS ##########
+
+git tag -a v1.4 -m "my version 1.4"
+git push --tags
+#Remove tag
+git tag -d my version 1.4
+git push origin :refs/tags/version 1.4

@@ -1,0 +1,19 @@
+
+Logs:
+/Users/wojtekf/Library/Logs/IntelliJIdea13/idea.log
+
+
+Maven in IntelliJ not working:
+
+Just in case you have that error again go to Settings -> Maven -> Runner and add
+
+-Dmaven.multiModuleProjectDirectory=$M2_HOME
+
+http://stackoverflow.com/questions/29983683/dmaven-multimoduleprojectdirectory-not-set-issue-with-maven-and-intellij
+
+
+
+
+
+Parsing Java:
+subl

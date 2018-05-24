@@ -1,0 +1,1 @@
+s3cmd modify --recursive --add-header="Cache-Control:max-age=31536000" s3://seqr-services.seqr.com/assets/fonts/whitney/

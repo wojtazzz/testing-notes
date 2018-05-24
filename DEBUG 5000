@@ -1,0 +1,4 @@
+seqr-external-simulators restart DEBUG 5000
+seqr-external-simulators restart - to turn off
+Intellij config:
+Run config -> remote -> server, port, component

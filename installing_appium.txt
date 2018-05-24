@@ -1,0 +1,143 @@
+# install java 6 jre and verify
+https://support.apple.com/kb/DL1572?locale=en_US
+Apple Menu > System Preferences > Java > Java > View..
+
+# install and configure maven and verify
+http://maven.apache.org/download.cgi
+mvn -version
+
+# get brew
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+# install npm (!not sudo install npm)
+brew install npm
+
+# install node.js
+brew install node
+
+#------Only for iOS testing ----------------
+# check if OSX version is 10.7 or higher [10.10.2 Yosemite]
+sw_vers
+
+# install xCode from app store [mine: 6.2]
+
+# check installed iOS SDK version [mine: 8,2]:
+Apple Menu > About this Mac > System Report... > Software > Developer
+
+
+#------ Android testing ---------
+# install android sdk and tools:
+http://developer.android.com/sdk/installing/index.html?pkg=tools
+cd ~/Library/Android_sdk/android-sdk-macosx/
+
+# Configure env variables
+export ANDROID_HOME=$HOME/Library/Android_sdk/android-sdk-macosx
+export ANDROID_SDK=$ANDROID_HOME
+export PATH="$ANDROID_HOME/tools":$PATH
+export PATH="$ANDROID_HOME/build-tools":$PATH
+export PATH="$ANDROID_HOME/platform-tools":$PATH
+
+# Make sure to install android 4.4.2 (API19) which we agreed to use for emulation
+# Make sure to install Atom x86 - fastest platform available for emualation
+# Install atom x86 emulator accelerator according to:
+http://stackoverflow.com/questions/2662650/making-the-android-emulator-run-faster
+
+
+# Create a AVD Android Virtual Device
+# Ive checked below config works smoothly!
+# AVD is attached in this conflu doc
+# Importing AVD
+# can download it, save in:
+/Users/UserName/.android/avd
+# run android avd and import (havn't checked it yet)
+
+# Recommened AVD setup
+Device: Nexus S (480x800)
+OS: 4.4.2 (API 19)
+CPU/ABI: Intel Atom x86
+RAM: 1024
+VM heap: 64
+Use Host GPU!
+
+android avd
+emulator -list-avds
+emulator -avd NameOfAvd
+
+# App version used by Saroj in his tests:
+se-qr-androidapp-prod-2.5.7.apk
+
+
+# ---- install apium server-------
+npm install -g appium
+
+# Check everything is OK with appiums android dependencies:
+appium-doctor --android
+
+# Run appium server
+appium &
+
+# check PID of appium by PORT
+lsof -n -i4tcp:APPIUM_PORT | grep LISTEN
+
+# emergency closing appium
+killall -9 node
+
+# Installing appium clinent (nice GUI stuff)
+???
+
+
+
+# --- appium inspector for indentifying element locators ----
+http://automatium.blogspot.com/2013/06/how-to-use-appium-inspector.html
+
+
+
+
+Executing project with emulated Android device using Intellij
+=============================================================
+
+1. Run "emulator -list-avds" to list all AVDs and select one with prepared configuation for Appium
+2. Run "emulator -avd NameOfYourAvd" to start emulation
+2. Run "adb devices" to get the device name.
+3. Use the device name showed in step2 in src/main/conf/se-android-sanity-test.properties under DeviceName
+4. Download the seqr android app apk.
+5. Mention the downloaded apk path in src/main/conf/se-android-sanity-test.properties under DeviceApkPath.
+6. Choose server name. For eg. by default belgium staging is in conf file. Replace if you want to choose other server.
+7. Provide other values for the parameter in conf folder.
+8. Finally, Under src/test/java/se.seamless.system.app.sanity.test/runs.test/RunTest.java, right click and Run Test.
+
+
+
+--------------
+Proxy
+
+10.2.0.203
+10.2.0.66
+
+
+
+
+http://bitbucket.seamless.internal/projects/DOCKER/repos/docker-android-emulator/browse/android/setup_android.sh
+
+/usr/local/Cellar/e2fsprogs/1.42.13/sbin/resize2fs ~/.android/avd/emulator.avd/userdata.img 1000M
+
+# change partition size to 1GB
+echo "disk.dataPartition.size=1000M" >> ~/.android/avd/emulator.avd/config.ini
+# change emulator ramSize
+sed -i -e s/hw.ramSize=512/hw.ramSize=2048/g ~/.android/avd/emulator.avd/config.ini
+# change emulator heapSize
+sed -i -e s/vm.heapSize=48/hw.heapSize=512/g ~/.android/avd/emulator.avd/config.ini
+
+emulator -avd emulator &
+
+http://bamboo.seamless.internal/browse/APPS-ANDROIDR
+
+
+
+com.seamless.seqr/.com.seamless.seqr.go.ui.onboarding.splashscreen.SplashScreenActivity
+com.seamless.seqr/.com.seamless.seqr.go.ui.onboarding.splashscreen.SplashScreenActivity
+
+package: com.seqr.go.app.dev
+
+--default-capabilities '{"appActivity":"com.seamless.seqr.go.ui.onboarding.splashscreen.SplashScreenActivity","appWaitActivity":"com.seamless.seqr.go.ui.onboarding.intro.IntroActivity"}'
+

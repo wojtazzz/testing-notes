@@ -1,0 +1,123 @@
+
+------------------------------
+Open grid config and Screens
+------------------------------
+
+http://gtsp-prd-utils-selenium01.seamless.internal:4444/grid/console#
+http://gtsp-prd-utils-selenium01:32822/vnc_auto.html
+
+
+
+example app apk:
+http://bamboo.seamless.internal/artifact/APPS-SEQRGO/JOB1/build-596/apk/app-dev-debug.apk
+
+
+OPS-Docker Images
+docker-android-emulator
+
+OPS-Docker Images
+docker-selenium
+
+SEQR Quality Assurance
+Selenium Grid for in App tests
+
+
+
+
+downloading from: http://lkw-dev-selenium-srv01/apps/android/4.5.17.apk
+
+driver.apps.defaultPath=http://lkw-dev-selenium-srv01/apps/
+
+
+
+
+docker run -e "host=host when you execute this command" -e "grid=host where grid is running" -d --privileged  -v /var/run/docker.sock:/var/run/docker.sock --device /dev/kvm:/dev/kvm -P  docker.seamless.internal/docker-android-emulator
+
+docker run -e "host=$SERVER" -e "grid=$SERVER" -d --privileged  -v /var/run/docker.sock:/var/run/docker.sock --device /dev/kvm:/dev/kvm -P -p 32830:6080  docker.seamless.internal/docker-android-emulator
+
+docker run -e "host=$SERVER" -e "grid=$SERVER" -d --privileged  -v /var/run/docker.sock:/var/run/docker.sock --device /dev/kvm:/dev/kvm -P docker.seamless.internal/docker-android-emulator
+
+docker run -d -p 4444:4444 -P docker.seamless.internal/docker-selenium
+
+
+./restart_emulators.sh
+
+free -m
+
+
+android-emulator-docker
+
+4723/tcp -> 0.0.0.0:32987       appium
+59001/tcp -> 0.0.0.0:32985      superviso ?android emulator?
+5904/tcp -> 0.0.0.0:32986       VNC
+6080/tcp -> 0.0.0.0:32842       python noVNC ?
+
+clean install failsafe:integration-test failsafe:verify
+ -Dspring.profiles.active=android,stgsepa,sepa,grid,4.5.17
+  -Dfailsafe.fork.count=6
+   -PsepaAndroid
+   -Ddriver.device.type=EMULATOR
+   -pl seqr-acceptance-tests-common,seqr-acceptance-tests-app -Dmaven.test.failure.ignore=true
+
+
+mvn clean install -U failsafe:integration-test failsafe:verify
+-Dskip.surefire.tests=true
+-Dspring.profiles.active=android,stgsepa,sepa,grid,4.5.17
+-Dfailsafe.fork.count=5
+-PsepaAndroid
+-Dappium.server.url=http://gtsp-prd-utils-selenium01.seamless.internal:4444/wd/hub
+-Dgrid.TestSessionUrl=http://gtsp-prd-utils-selenium01.seamless.internal:4444/grid/api/testsession
+-Dgrid.ProxyUrl=http://gtsp-prd-utils-selenium01.seamless.internal:4444/grid/api/proxy
+-Ddriver.device.type=EMULATOR
+ -Ddriver.android.appPath=http://gtsp-prd-utils-selenium01.seamless.internal/4.5.17-SNAPSHOT.apk
+ -pl seqr-acceptance-tests-common,seqr-acceptance-tests-app
+ -Dtest=EuUserRegistrationTest
+
+
+mvn clean install -U failsafe:integration-test failsafe:verify -Dskip.surefire.tests=true -Dspring.profiles.active=android,stgsepa,sepa,grid,4.5.17 -Dfailsafe.fork.count=3 -PsepaAndroid -Dappium.server.url=http://gtsp-prd-utils-selenium01.seamless.internal:4444/wd/hub -Dgrid.TestSessionUrl=http://gtsp-prd-utils-selenium01.seamless.internal:4444/grid/api/testsession -Dgrid.ProxyUrl=http://gtsp-prd-utils-selenium01.seamless.internal:4444/grid/api/proxy -Ddriver.device.type=EMULATOR -Ddriver.android.appPath=http://bamboo.seamless.internal/browse/APPS-ANDROIDF-701/artifact/ASD/APK/seqr-android-app-dev-debug-4.6.16-SNAPSHOT.apk -pl seqr-acceptance-tests-common,seqr-acceptance-tests-app -Dtest=EuUserRegistrationTest
+
+
+
+
+
+
+mvn clean install failsafe:integration-test failsafe:verify -Dskip.surefire.tests=true -Dspring.profiles.active=android,stgsepa,sepa,grid,4.5.17 -Dfailsafe.fork.count=3 -PsepaAndroid -Ddriver.device.type=EMULATOR -pl seqr-acceptance-tests-common,seqr-acceptance-tests-app -Dmaven.test.failure.ignore=true -Dtest=EuUserRegistrationTest
+
+
+
+mvn failsafe:integration-test failsafe:verify -Dskip.surefire.tests=true -Dspring.profiles.active=android,stgsepa,sepa,grid,4.5.17 -Dfailsafe.fork.count=1 -PsepaAndroid -Dmaven.test.failure.ignore=true -Dit.test=EuUserRegistrationTest | tee appium.log
+
+
+
+
+
+-------------
+Grid parameters
+-------------
+
+http://gtsp-prd-utils-selenium01.seamless.internal:4444/grid/console
+
+appium.server.url=
+http://gtsp-prd-utils-selenium01.seamless.internal:4444/wd/hub
+
+grid.TestSessionUrl=
+http://gtsp-prd-utils-selenium01.seamless.internal:4444/grid/api/testsession
+
+grid.ProxyUrl=
+http://gtsp-prd-utils-selenium01.seamless.internal:4444/grid/api/proxy
+
+
+
+
+--default-capabilities '{"appActivity":".com.seamless.seqr.go.ui.onboarding.splashscreen.SplashScreenActivity","appWaitActivity":"com.seamless.seqr.go.ui.onboarding.intro.IntroActivity"}'
+
+
+[debug] [ADB] Running '/Users/wojtekf/Library/Android_sdk/android-sdk-macosx/platform-tools/adb' with args: ["-P",5037,"-s","emulator-5554","shell","am","start","-W","-n","com.seamless.seqr/.com.seamless.seqr.go.ui.onboarding.splashscreen.SplashScreenActivity","-S","-a","android.intent.action.MAIN","-c","android.intent.category.LAUNCHER","-f","0x10200000"]
+
+
+
+
+
+
+
+
